@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AP Precal Test Corrections</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --bg-secondary: #f8f8f6;
+  --bg-tertiary: #f0f0ec;
+  --bg-info: #e6f1fb;
+  --bg-success: #eaf3de;
+  --bg-warning: #faeeda;
+  --bg-danger: #fcebeb;
+  --text: #1a1a18;
+  --text-secondary: #5f5e5a;
+  --text-tertiary: #888780;
+  --text-info: #185fa5;
+  --text-success: #3b6d11;
+  --text-warning: #854f0b;
+  --text-danger: #a32d2d;
+  --border: rgba(0,0,0,0.12);
+  --border-med: rgba(0,0,0,0.22);
+  --border-info: rgba(24,95,165,0.4);
+  --border-success: rgba(59,109,17,0.4);
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1a;
+    --bg-secondary: #252523;
+    --bg-tertiary: #2e2e2b;
+    --bg-info: #0c2d4a;
+    --bg-success: #172d08;
+    --bg-warning: #3a2004;
+    --bg-danger: #3a1010;
+    --text: #ebe9e0;
+    --text-secondary: #a8a69e;
+    --text-tertiary: #6e6c66;
+    --text-info: #85b7eb;
+    --text-success: #97c459;
+    --text-warning: #ef9f27;
+    --text-danger: #f09595;
+    --border: rgba(255,255,255,0.1);
+    --border-med: rgba(255,255,255,0.18);
+    --border-info: rgba(133,183,235,0.4);
+    --border-success: rgba(151,196,89,0.4);
+  }
+}
+
+html, body { font-family: var(--font); background: var(--bg); color: var(--text); }
+
+.topbar {
+  padding: 12px 16px;
+  border-bottom: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar h1 { font-size: 15px; font-weight: 500; }
+.badge { font-size: 11px; background: var(--bg-info); color: var(--text-info); padding: 2px 8px; border-radius: var(--radius-md); }
+
+.main { padding: 20px 16px; max-width: 660px; margin: 0 auto; }
+.section { margin-bottom: 22px; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+
+.upload-box {
+  border: 1.5px dashed var(--border-med);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: var(--bg-secondary);
+}
+.upload-box:hover { background: var(--bg-tertiary); }
+.upload-box.has-image { border-style: solid; border-color: var(--border-info); padding: 12px; }
+.upload-label { font-size: 13px; color: var(--text-secondary); }
+.upload-label span { color: var(--text-info); font-weight: 500; }
+#file-input { display: none; }
+.preview-img { max-height: 200px; max-width: 100%; border-radius: var(--radius-md); display: block; margin: 0 auto; }
+
+.problem-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg-secondary);
+  border: 0.5px solid var(--border-med);
+  border-radius: var(--radius-md);
+  resize: vertical;
+  min-height: 72px;
+  line-height: 1.6;
+}
+.problem-input:focus { outline: none; border-color: var(--border-info); }
+.problem-input::placeholder { color: var(--text-tertiary); }
+
+.generate-btn {
+  width: 100%;
+  padding: 11px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--text);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.generate-btn:hover { opacity: 0.85; }
+.generate-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.output-box { background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.output-header { padding: 10px 14px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.output-title { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+.copy-btn { font-size: 12px; padding: 4px 12px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-med); border-radius: var(--radius-md); cursor: pointer; transition: background 0.1s; }
+.copy-btn:hover { background: var(--bg-tertiary); }
+.copy-btn.copied { color: var(--text-success); border-color: var(--border-success); background: var(--bg-success); }
+.output-text { padding: 14px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.75; white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; }
+
+.claude-link { display: block; text-align: center; padding: 11px; background: var(--bg-info); color: var(--text-info); font-size: 13px; font-weight: 500; border-radius: var(--radius-md); text-decoration: none; margin-top: 10px; transition: opacity 0.15s; }
+.claude-link:hover { opacity: 0.8; }
+
+.steps-box { background: var(--bg-secondary); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px; margin-top: 14px; }
+.step { display: flex; gap: 12px; align-items: flex-start; padding: 9px 0; border-bottom: 0.5px solid var(--border); }
+.step:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num { width: 22px; height: 22px; border-radius: 50%; background: var(--bg-info); color: var(--text-info); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.step-text { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>AP Precal Test Corrections</h1>
+  <span class="badge">64 note files indexed</span>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-label">Step 1 — upload your test problem photo</div>
+    <div class="upload-box" id="upload-box" onclick="document.getElementById('file-input').click()">
+      <div id="upload-label" class="upload-label"><span>Click to upload</span> a photo of the problem</div>
+      <img id="preview-img" class="preview-img" style="display:none;" />
+    </div>
+    <input type="file" id="file-input" accept="image/*" onchange="handleFile(event)" />
+  </div>
+
+  <div class="section">
+    <div class="section-label">Step 2 — optionally describe the problem (helps Claude)</div>
+    <textarea class="problem-input" id="problem-desc" placeholder="e.g. 'find the vertical asymptotes of a rational function' — or leave blank"></textarea>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Step 3 — generate your correction prompt</div>
+    <button class="generate-btn" id="generate-btn" disabled onclick="generate()">Generate prompt</button>
+  </div>
+
+  <div class="section hidden" id="output-section">
+    <div class="section-label">Step 4 — copy this and paste it into Claude with your image</div>
+
+    <div class="output-box">
+      <div class="output-header">
+        <span class="output-title">your correction prompt</span>
+        <button class="copy-btn" id="copy-btn" onclick="copyPrompt()">Copy prompt</button>
+      </div>
+      <div class="output-text" id="output-text"></div>
+    </div>
+
+    <a href="https://claude.ai" target="_blank" class="claude-link">Open Claude.ai ↗</a>
+
+    <div class="steps-box">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Click "Open Claude.ai" above to open a new Claude chat</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Attach your test problem photo to the message</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Paste the copied prompt into the message box and hit send</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">Claude will give you the full correction: steps, worked example, exact notes section reference, and the quote to use in your Notes box</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const NOTES_INDEX = [
+  "AP 1.1 Change in Tandem",
+  "AP 1.2 Rates of Change",
+  "AP 1.3 Rates of Change (linear & quadratic)",
+  "AP 1.4 Polynomial Functions & ROC",
+  "AP 1.5A Polynomial f(x) & Complex Zeros",
+  "AP 1.5B Polynomial f(x) & Complex Zeros",
+  "AP 1.5C Polynomial f(x) & Complex Zeros",
+  "AP 1.6 Polynomial f(x) & End Behavior",
+  "AP 1.7 Rational Functions & End Behavior",
+  "AP 1.8 Rational Functions & Zeros",
+  "AP 1.9-1.10 Rational f(x) Vertical Asy & Holes",
+  "AP 1.11A Equivalent Representations",
+  "AP 1.11B Binomial Theorem",
+  "AP 1.12 Transformations of Functions",
+  "AP 1.12 Transformations of Functions (part 2)",
+  "AP 1.13 Function Model Selection",
+  "AP 1.14 Function Model Application",
+  "Factoring Polynomials (part 1)",
+  "Factoring Polynomials (part 2)",
+  "AP 2.1 Arithmetic & Geometric Sequences",
+  "AP 2.2 Change in Linear & Exponential f(x)s",
+  "AP 2.3 Exponential Functions",
+  "AP 2.4 Exponential Function Manipulation",
+  "AP 2.5 Expo f(x) Context & Data Modeling",
+  "AP 2.6 Competing Function Model Validation",
+  "AP 2.7 Composition of Functions",
+  "AP 2.8 Inverse Functions",
+  "AP 2.9 & 2.10 Log Expressions",
+  "AP 2.11 & 2.12 Logarithmic Functions",
+  "AP 2.13A Exponential & Logarithm Equations",
+  "AP 2.13B Exponential & Logarithm Inequalities",
+  "AP 2.14 Log f(x) Context & Data Modeling",
+  "AP 2.15 Semi-Log Plots",
+  "AP 2.16 Solving Expo w/ Different Bases",
+  "AP 3.01 Periodic Phenomena",
+  "AP 3.02 Sine, Cosine and Tangent",
+  "AP 3.03A Sine & Cosine Function Values",
+  "AP 3.03B The Unit Circle",
+  "AP 3.04 Sine & Cosine Function Graphs",
+  "AP 3.05 Sinusoidal Functions",
+  "AP 3.06 Sinusoidal Function Transformations",
+  "AP 3.06B Graphing Sinusoidal Functions",
+  "AP 3.08 The Tangent Function",
+  "AP 3.09 Inverse Trig Functions",
+  "AP 3.10A Trigonometric Equations",
+  "AP 3.10B Trig Inequalities",
+  "AP 3.11 Secant, Cosecant & Cotangent",
+  "AP 3.12A Equivalent Trig Representations",
+  "AP 3.12B More Trig Identities",
+  "AP 3.12C Trig Equations & Inequalities",
+  "AP 3.12D Verifying Trig Identities",
+  "AP 3.13A Trig & Polar Coordinates",
+  "AP 3.13B Imaginary & Polar Coordinates",
+  "AP 3.14A Polar Function Graphs (Rose Curves)",
+  "AP 3.14B Polar Function Graphs (Limacons)",
+  "AP 3.15 Rates of Change in Polar Functions",
+  "AP 4.01 Parametric Functions",
+  "AP 4.02 Parametric f(x)s Modeling Motion",
+  "AP 4.03 Parametric f(x)s & ROC",
+  "AP 4.05 Implicitly Defined Functions",
+  "AP 4.06A Conic Sections (Parabolas & Circles)",
+  "AP 4.06B Conic Sections (Ellipses)",
+  "AP 4.06C Conic Sections (Hyperbolas)",
+  "AP 4.06D Translate & Classify Conics",
+  "Law of Sines",
+  "Law of Cosines"
+];
+
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = document.getElementById('preview-img');
+    img.src = ev.target.result;
+    img.style.display = 'block';
+    document.getElementById('upload-label').style.display = 'none';
+    document.getElementById('upload-box').classList.add('has-image');
+    document.getElementById('generate-btn').disabled = false;
+  };
+  reader.readAsDataURL(file);
+}
+
+function generate() {
+  const desc = document.getElementById('problem-desc').value.trim();
+  const notesList = NOTES_INDEX.map(n => `- ${n}`).join('\n');
+
+  const prompt = `I am doing AP Precalculus test corrections. I've attached a photo of the test problem I missed.
+${desc ? `\nAdditional context: ${desc}\n` : ''}
+Please help me with my correction by doing ALL of the following:
+
+1. TOPIC: Identify exactly what AP Precal concept this problem is testing.
+
+2. NOTES LOCATION: I have notes for every topic in this course. Here is the full list:
+${notesList}
+
+Tell me exactly which note file(s) this problem comes from AND the specific section number (e.g. "AP 1.7 Rational Functions & End Behavior — Section II. A. 3"). Be as specific as possible with the section reference.
+
+3. STEP-BY-STEP SOLUTION: Rework this problem completely from scratch. Show every step of the math.
+
+4. WORKED EXAMPLE: Give me a similar example problem with different numbers but the same concept, worked out step by step. This is for my "Review" box on the corrections paper.
+
+5. NOTES QUOTE: Write out the exact rule, formula, or steps from the notes that I need to know to solve this problem correctly. This is what I'll write in my "Notes" box on the corrections paper. Reference the section number (e.g. "AP 1.7 — II. A. 1").`;
+
+  document.getElementById('output-text').textContent = prompt;
+  document.getElementById('output-section').classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('output-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
+}
+
+function copyPrompt() {
+  const text = document.getElementById('output-text').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy prompt'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
